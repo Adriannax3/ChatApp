@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         margin: 8,
     },
     buttonRectangle: {
-        paddingVertical: 8,
+        paddingVertical: 12,
         paddingHorizontal: 16,
         fontWeight: 'bold',
         fontSize: 18,

@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native';
 import { useTheme } from "../context/ThemeContext";
 import ButtonRectangle from "./ButtonRectangle";
-import { useNavigation } from '@react-navigation/native';
+import { useAuth } from "../context/AuthContext";
 
 const FormLogin = () => {
     const { theme } = useTheme();
-    const navigation = useNavigation();
+    const { login, error, user } = useAuth();
 
     const [loginData, setLoginData] = useState({
-        login: '',
-        password: '',
+        login: 'jacek123',
+        password: '1234567aB',
     });
+    const [errorForm, setErrorForm] = useState(null);
 
     const handleChangeForm = (name, value) => {
         setLoginData(prevState => ({
@@ -20,8 +21,26 @@ const FormLogin = () => {
         }));
     };
 
-    const handleSubmit = () => {
-        console.log(loginData);
+    const handleSubmit = async () => {
+        if(!loginData.login || !loginData.password) {
+            setErrorForm("Uzupełnij wszystkie pola.")
+            return;
+        }
+
+        //WALIDACJA LOGIN
+        if(loginData.login.length < 3) {
+            setErrorForm("Nazwa użytkownika musi mieć co najmniej 3 znaki.")
+            return;
+        }
+
+        const loginRegex = /^[a-zA-Z0-9_]+$/;
+        if (!loginRegex.test(loginData.login)) {
+            setErrorForm('Nazwa użytkownika może zawierać tylko litery, cyfry i "_".');
+            return;
+        }
+
+        setErrorForm(null);
+        login(loginData.login, loginData.password);
     };
 
     return(
@@ -40,11 +59,11 @@ const FormLogin = () => {
             onChangeText={text => handleChangeForm("password", text)}
             secureTextEntry={true}
         />
+        {errorForm && <Text style={[styles.textError, {color: theme.colors.error}]}>{errorForm}</Text>}
+        {error && <Text style={[styles.textError, {color: theme.colors.error}]}>{error}</Text>}
+        {user && <Text style={[styles.textError, {color: theme.colors.error}]}>{user.login}</Text>}
         <View>
             <ButtonRectangle onPress={handleSubmit} text={"Zaloguj się"}/>
-        </View>
-        <View>
-            <ButtonRectangle onPress={() => navigation.navigate('Register')} text={"Rejestracja"}/>
         </View>
     </View>
     );
@@ -53,10 +72,9 @@ const FormLogin = () => {
 
 const styles = StyleSheet.create({
     container: {
-        height: 300,
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 20,
+        marginTop: 20,
     },
     formTitle: {
         fontSize: 24,
@@ -65,7 +83,7 @@ const styles = StyleSheet.create({
     },
     input: {
         padding: 10,
-        marginVertical: 10,
+        marginBottom: 5,
         width: 250,
         borderWidth: 1,
         borderColor: '#ccc',
@@ -75,9 +93,15 @@ const styles = StyleSheet.create({
     inputLabel: {
         width: 250,
         fontSize: 16,
+        marginBottom: 5,
+        fontWeight: 400,
+        letterSpacing: 1,
     },
-    buttonWrapper: {
-        backgroundColor: "#00ff00"
+    textError: {
+        width: '100%',
+        maxWidth: 300,
+        fontSize: 18,
+        textAlign: 'center'
     }
 });
 

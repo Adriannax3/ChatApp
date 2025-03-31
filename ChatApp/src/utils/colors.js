@@ -6,11 +6,12 @@ export const lightTheme = {
   colors: {
     ...DefaultTheme.colors,
     color: '#000',
-    primary: '#d0e8ff',
-    background: '#f2e6f7',
+    primary: '#a1eafb',
+    background: '#ffcef3',
     text: '#000000',
-    statusBar: '#cce5e5',
-    backgroundButton: '#000',
+    statusBar: '#ffcef3',
+    backgroundButton: '#cabbe9',
+    error: '#ff0000'
   },
 };
 
@@ -20,11 +21,12 @@ export const darkTheme = {
   colors: {
     ...DarkTheme.colors,
     color: '#fff',
-    primary: '#007aff',
+    primary: '#3d6cb9',
     background: '#000000',
     text: '#ffffff',
     statusBar: '#000',
     backgroundButton: '#808080',
+    error: '#ff0000'
   },
 };
 
