@@ -19,8 +19,9 @@ export const AuthProvider = ({ children }) => {
                         'Authorization': `Bearer ${savedToken}`
                     },
                 });
-                setUser(userInfo);
+                setUser(userInfo.data);
                 setError(null);
+                navigation.navigate('MyAccount');
             }
         } catch (error) {
             setError(error.response.data.message);
@@ -30,8 +31,8 @@ export const AuthProvider = ({ children }) => {
     checkToken();
   }, []);
 
-  const login = async (login, password) => {
-    console.log("useAuth - Login");
+  const login = async (login, password, navigation) => {
+    console.log("probuje logowanie");
     try {
         const res = await axios.post('/userLogin', {
             login,
@@ -39,10 +40,11 @@ export const AuthProvider = ({ children }) => {
         });
         const resToken = res.data.token;
         setToken(resToken);
+        console.log(res.data);
         await AsyncStorage.setItem('token', resToken);
         console.log(resToken);
 
-        const userInfo = await axios.post('/currentUser', {
+        const userInfo = await axios.get('/currentUser', {
             headers: {
                 'Authorization': `Bearer ${resToken}`
             },
@@ -65,18 +67,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
-    const res = await axios.post('/logoutUser', {
+  const logout = async (navigation) => {
+    try {
+      await axios.post('/logoutUser', null, {
         headers: {
-            Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-    });
+      });
+    } catch (e) {
+      console.log("Błąd przy wylogowaniu:", e);
+    }
+  
     await AsyncStorage.removeItem('token');
     setToken(null);
     setUser(null);
     setError(null);
-    navigation.navigate('WelcomeScreen');
-  }
+  };
 
   return (
     <AuthContext.Provider value={{ user, token, error, login, logout }}>

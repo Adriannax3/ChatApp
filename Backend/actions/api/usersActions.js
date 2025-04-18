@@ -4,11 +4,44 @@ const User = require("../../models/User");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require("../../config");
+const Invitation = require("../../models/Invitation");
 const invalidatedTokens = new Set();
 
 connectDB();
 
 class usersActions {
+
+    async getUsersForInvite(req, res) {
+        try {
+            const id = req.user?.id;
+            if(!id) return res.status(400).json({message: "Brak userId w zapytaniu."});
+            
+            const currentUser = await User.findById(id);
+            if(!currentUser)  return res.status(400).json({message: "Ten user nie istnieje."});
+
+            const invitations = await Invitation.find({
+                $or: [
+                    { sender: id },
+                    { receiver: id }
+                ]
+            });
+
+            const relatedUsers = new Set();
+            invitations.forEach(inv => {
+                relatedUsers.add(inv.sender.toString());
+                relatedUsers.add(inv.receiver.toString());
+            });
+            relatedUsers.add(id);
+
+            const usersToInvite = await User.find({
+                _id: {$nin: Array.from(relatedUsers)}
+            }).select('_id username avatar');
+            res.status(200).json(usersToInvite);
+
+        } catch (error) {
+            res.status(500).json({message: "Błąd podczas pobierania użytkowników: ", error})
+        }
+    }
 
     async getAllUsers(req, res) {
         try {
@@ -103,8 +136,9 @@ class usersActions {
     }
 
     verifyToken(req, res, next) {
-        const authHeader = req.body.headers['Authorization'];
+        const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
+        console.log(token);
         if (!token) {
             return res.status(401).json({ message: 'Brak dostępu.' });
         }
@@ -124,7 +158,7 @@ class usersActions {
     }
 
     logout(req, res) {
-        const token = req.headers['Authorization'];
+        const token = req.headers['authorization'];
         if (!token) {
             return res.status(400).json({ message: 'Brak tokenu.' });
         }

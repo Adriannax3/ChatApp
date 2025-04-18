@@ -4,13 +4,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useTheme, ThemeProvider } from './context/ThemeContext';
 import { useAuth, AuthProvider } from './context/AuthContext';
 import AppNavigator from './navigation/AppNavigator';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 const App = () => (
-  <ThemeProvider>
-    <AuthProvider>
-      <AppWithTheme />
-    </AuthProvider>
-  </ThemeProvider>
+  <GestureHandlerRootView style={{ flex: 1 }}>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppWithTheme />
+      </AuthProvider>
+    </ThemeProvider>
+  </GestureHandlerRootView>
 );
 
 const AppWithTheme = () => {

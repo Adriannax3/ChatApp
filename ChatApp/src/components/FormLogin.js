@@ -3,10 +3,12 @@ import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, TextInput } fro
 import { useTheme } from "../context/ThemeContext";
 import ButtonRectangle from "./ButtonRectangle";
 import { useAuth } from "../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 
 const FormLogin = () => {
     const { theme } = useTheme();
     const { login, error, user } = useAuth();
+    const navigation = useNavigation();
 
     const [loginData, setLoginData] = useState({
         login: 'jacek123',
@@ -40,7 +42,7 @@ const FormLogin = () => {
         }
 
         setErrorForm(null);
-        login(loginData.login, loginData.password);
+        login(loginData.login, loginData.password, navigation);
     };
 
     return(
@@ -61,7 +63,6 @@ const FormLogin = () => {
         />
         {errorForm && <Text style={[styles.textError, {color: theme.colors.error}]}>{errorForm}</Text>}
         {error && <Text style={[styles.textError, {color: theme.colors.error}]}>{error}</Text>}
-        {user && <Text style={[styles.textError, {color: theme.colors.error}]}>{user.login}</Text>}
         <View>
             <ButtonRectangle onPress={handleSubmit} text={"Zaloguj się"}/>
         </View>
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
         width: 250,
         borderWidth: 1,
         borderColor: '#ccc',
-        borderRadius: 5,
         backgroundColor: 'white',
     },
     inputLabel: {
