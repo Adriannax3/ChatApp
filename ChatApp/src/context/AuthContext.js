@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
                 });
                 setUser(userInfo.data);
                 setError(null);
-                navigation.navigate('MyAccount');
+                //navigation.navigate('MyAccount');
             }
         } catch (error) {
             setError(error.response.data.message);

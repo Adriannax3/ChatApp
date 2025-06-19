@@ -11,7 +11,8 @@ export const lightTheme = {
     text: '#000000',
     statusBar: '#ffcef3',
     backgroundButton: '#cabbe9',
-    error: '#ff0000'
+    error: '#ff0000',
+    secondaryBackground: '#cabbe9'
   },
 };
 
@@ -26,7 +27,8 @@ export const darkTheme = {
     text: '#ffffff',
     statusBar: '#000',
     backgroundButton: '#808080',
-    error: '#ff0000'
+    error: '#ff0000',
+    secondaryBackground: '#808080'
   },
 };
 

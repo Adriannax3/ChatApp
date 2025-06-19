@@ -17,6 +17,7 @@ const FormRegister = () => {
         avatar: '',
     });
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     const handleChangeForm = (name, value) => {
         setRegisterData(prevState => ({
@@ -33,6 +34,8 @@ const FormRegister = () => {
       };
 
      const handleSubmit = async () => {
+        setSuccess(null);
+
         if(!registerData.login || !registerData.username || !registerData.password || !registerData.confirmPassword) {
             setError("Uzupełnij wszystkie pola.")
             return;
@@ -79,7 +82,6 @@ const FormRegister = () => {
           return;
         }
 
-        //DANE POPRAWNE, PRZEŚLIJ DALEJ
         try {
             const res = await axios.post('/users', {
                 login: registerData.login,
@@ -87,8 +89,6 @@ const FormRegister = () => {
                 password: registerData.password,
                 avatar: registerData.avatar,
             });
-            //TO DO
-            // CALLBACK POPRAWNEJ REJESTRACJI
             setRegisterData(prevState => ({
                 ...prevState,
                 login: '',
@@ -98,6 +98,7 @@ const FormRegister = () => {
                 avatar: '',
             }));
             setError(null);
+            setSuccess("Sukces! Utworzono konto.");
         }
         catch(error) {
             setError("Błąd: " + error.response.data.message);
@@ -136,6 +137,7 @@ const FormRegister = () => {
         <Text style={[styles.inputLabel, {color: theme.colors.color}]}>Wybierz avatar:</Text>
         <AvatarPicker onSelect={handleAvatarSelect} />
         {error && <Text style={[styles.textError, {color: theme.colors.error}]}>{error}</Text>}
+        {success && <Text style={[styles.textSuccess]}>{success}</Text>}
         <View>
             <ButtonRectangle onPress={handleSubmit} text={"Zarejestruj się"}/>
         </View>
@@ -180,6 +182,13 @@ const styles = StyleSheet.create({
         maxWidth: 300,
         fontSize: 18,
         textAlign: 'center'
+    },
+    textSuccess: {
+        width: '100%',
+        maxWidth: 300,
+        fontSize: 18,
+        textAlign: 'center',
+        color: 'green'
     }
 });
 

@@ -6,7 +6,6 @@ connectDB();
 class messageActions {
     async saveMessage({ fromUserId, toUserId, message }) {
         const newMessage = new Message({ fromUserId, toUserId, message });
-        console.log(newMessage);
         return await newMessage.save();
     }
 

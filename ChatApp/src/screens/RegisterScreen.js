@@ -31,13 +31,14 @@ export default function RegisterScreen() {
             </View>
             <ButtonIcon icon={theme.name === 'light' ? settingIconLight : settingIconDark} onPress={() => navigation.navigate('SettingsApp')}/>
           </ScrollView>
-      </SafeAreaView >
+      </SafeAreaView>
   );
 };
 
 
 const styles = StyleSheet.create({
   sectionRegisterScreen: {
+    flex:1,
     paddingVertical: 42,
     width: '100%',
     alignItems: 'center',

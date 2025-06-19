@@ -17,6 +17,8 @@ const SearchFriends = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (user) fetchUsers();
@@ -42,6 +44,8 @@ const SearchFriends = () => {
   );
 
   const sendFriendRequest = async (receiverId) => {
+    setSuccess(null);
+    setError(null);
     try {
       await axios.post(
         "/friends/add",
@@ -54,11 +58,11 @@ const SearchFriends = () => {
           },
         }
       );
-      alert("Zaproszenie wysłane!");
+      setSuccess("Zaproszenie wysłane!");
       fetchUsers();
     } catch (error) {
       console.error("Błąd przy wysyłaniu zaproszenia:", error);
-      alert("Nie udało się wysłać zaproszenia.");
+      setError("Nie udało się wysłać zaproszenia.");
     }
   };
 
@@ -70,7 +74,8 @@ const SearchFriends = () => {
         value={search}
         onChangeText={setSearch}
       />
-
+      {success && <Text style={[styles.textSuccess]}>{success}</Text>}
+      {error && <Text style={[styles.textError, {color: theme.colors.error}]}>{error}</Text>}
       {loading ? (
         <Text>Ładowanie...</Text>
       ) : (
@@ -137,6 +142,19 @@ const styles = StyleSheet.create({
   inviteText: {
     fontWeight: "bold",
   },
+  textError: {
+        width: '100%',
+        maxWidth: 300,
+        fontSize: 18,
+        textAlign: 'center'
+  },
+  textSuccess: {
+      width: '100%',
+      maxWidth: 300,
+      fontSize: 18,
+      textAlign: 'center',
+      color: 'green'
+  }
 });
 
 export default SearchFriends;

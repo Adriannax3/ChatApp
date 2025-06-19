@@ -12,24 +12,26 @@ import SearchFriends from '../components/SearchFriends';
 import HomeScreen from '../components/HomeScreen';
 import InvitationsScreen from '../components/InvitationsScreen';
 import ChatScreen from '../screens/ChatScreen';
+import Icon from 'react-native-vector-icons/Feather';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const LoggedInTabs = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+      }}
+    >
       <Tab.Screen 
         name="MyAccount" 
         component={MyAccountScreen} 
         options={{ 
           headerShown: false,
-          // tabBarIcon: ({ color, size }) => (
-          //   <Text>
-          //   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path> <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path> </svg> 
-
-          //   </Text>
-          // )
+           tabBarIcon: ({ color, size }) => (
+              <Icon name="user" color={color} size={size} />
+            ),
         }}
       />
       <Tab.Screen 
@@ -37,9 +39,9 @@ const LoggedInTabs = () => {
         component={FriendsScreen} 
         options={{ 
           headerShown: false,
-          // tabBarIcon: ({ color, size }) => (
-          //   <FontAwesome name="user" size={size} color={color} />
-          // )
+           tabBarIcon: ({ color, size }) => (
+              <Icon name="users" color={color} size={size} />
+            ),
         }}
       />
       <Tab.Screen 
@@ -47,9 +49,9 @@ const LoggedInTabs = () => {
       component={SettingsAppScreen} 
       options={{ 
         headerShown: false,
-//        tabBarIcon: ({ color, size }) => (
-//          <FontAwesome name="user" size={size} color={color} />
-//        ),
+        tabBarIcon: ({ color, size }) => (
+          <Icon name="settings" color={color} size={size} />
+        ),
       }}/>
     </Tab.Navigator>
     

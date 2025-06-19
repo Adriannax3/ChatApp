@@ -15,9 +15,9 @@ const AvatarPicker = ({onSelect}) => {
             >
                 {avatars.map((avatar, index) => (
                     <TouchableOpacity key={index} onPress={() => {setCurrentAvatar(avatars[index]); onSelect(avatars[index]);}} style={[styles.avatarOption, currentAvatar === avatar && styles.selectedOption]}>
-                    <Text style={styles.avatarOptionText}>{avatar}</Text>
+                      <Text style={styles.avatarOptionText}>{avatar}</Text>
                     </TouchableOpacity>
-                ))};
+                ))}
             </ScrollView>
         </View>
     );

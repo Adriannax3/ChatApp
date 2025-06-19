@@ -14,10 +14,6 @@ export default function WelcomeScreen() {
   const { theme, toggleTheme } = useTheme();
   const navigation = useNavigation();
 
-  const handleChangeTheme = () => {
-      toggleTheme();
-  }
-
     return(
       <SafeAreaView style={[styles.sectionWelcomeScreen, { backgroundColor: theme.colors.backgroundColor }]}>
             <Image

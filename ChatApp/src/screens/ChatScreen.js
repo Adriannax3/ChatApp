@@ -26,6 +26,7 @@ export default function ChatScreen() {
   const [input, setInput] = useState('');
   
   const socketRef = useRef(null);
+  const flatListRef = useRef(null);
 
   
   const fetchMessages = async () => {
@@ -73,7 +74,14 @@ export default function ChatScreen() {
     return () => {
         socketRef.current.disconnect();        
     };
-    }, []);
+  }, []);
+
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  }, [messages]);
+
 
 
   const sendMessage = () => {
@@ -86,13 +94,14 @@ export default function ChatScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.backgroundColor }}>
+    <SafeAreaView style={{ flex: 1, paddingBottom: 32, backgroundColor: theme.colors.backgroundColor }}>
         <KeyboardAvoidingView
         style={[styles.container, { backgroundColor: theme.colors.backgroundColor }]}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={90}
         >
             <FlatList
+                ref={flatListRef}
                 data={messages}
                 keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
@@ -100,7 +109,7 @@ export default function ChatScreen() {
                     style={[
                     styles.messageBubble,
                     item.fromUserId === user._id
-                        ? styles.myMessage
+                         ? [styles.myMessage, { backgroundColor: theme.colors.primary }]
                         : styles.theirMessage,
                     ]}
                 >
@@ -110,16 +119,16 @@ export default function ChatScreen() {
                 contentContainerStyle={styles.messagesContainer}
             />
 
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, {backgroundColor: theme.colors.backgroundColor}]}>
                 <TextInput
                 value={input}
                 onChangeText={setInput}
                 placeholder="Napisz wiadomość..."
                 placeholderTextColor="#888"
-                style={[styles.input, { color: theme.colors.text }]}
+                style={[styles.input, { color: theme.colors.text, backgroundColor: theme.colors.secondaryBackground }]}
                 />
-                <Pressable onPress={sendMessage} style={styles.sendButton}>
-                <Text style={styles.sendText}>Wyślij</Text>
+                <Pressable onPress={sendMessage} style={[styles.sendButton, {backgroundColor: theme.colors.primary}]}>
+                <Text style={[styles.sendText, { color: theme.colors.text }]}>Wyślij</Text>
                 </Pressable>
             </View>
         </KeyboardAvoidingView>
@@ -152,7 +161,6 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
   },
   myMessage: {
-    backgroundColor: '#DCF8C6',
     alignSelf: 'flex-end',
   },
   theirMessage: {
@@ -165,9 +173,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     padding: 8,
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    backgroundColor: '#fff',
   },
   input: {
     flex: 1,
