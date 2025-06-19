@@ -72,10 +72,8 @@ class invitationsActions {
   }
   
   async getReceivedInvitations(req, res) {
-    console.log("userId");
     try {
       const userId = req.user?.id;
-      console.log(userId);
       const receiver = await User.findById(userId);
       if (!receiver) {
         return res.status(400).json({ message: "Nieprawidłowe ID użytkownika." });
@@ -102,7 +100,6 @@ class invitationsActions {
     try {
       const invitationId = req.params.invitationId;
       const invitation = await Invitation.findById(invitationId);
-      console.log(invitationId);
       if(!invitation) return res.status(400).json({message: "Nie ma takiego zaproszenia."});
       
       if (invitation.status !== "pending") {

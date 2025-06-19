@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const usersActions = require("../actions/api/usersActions");
 const invitationsActions = require('../actions/api/invitationsActions');
-
+const messageActions = require('../actions/api/messagesActions');
 
 // USERS
 router.get('/users',  usersActions.verifyToken, usersActions.getAllUsers);
@@ -20,5 +20,7 @@ router.post('/friends/add', usersActions.verifyToken, invitationsActions.sendInv
 router.post('/friends/invitations/:invitationId/accept', usersActions.verifyToken, invitationsActions.acceptInvite)
 router.post('/friends/invitations/:invitationId/reject', usersActions.verifyToken, invitationsActions.rejectInvite)
 
+// MESSAGES
+router.get('/messages', usersActions.verifyToken, messageActions.getMessages);
 
 module.exports = router;

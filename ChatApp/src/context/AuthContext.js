@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (login, password, navigation) => {
-    console.log("probuje logowanie");
     try {
         const res = await axios.post('/userLogin', {
             login,
@@ -40,16 +39,13 @@ export const AuthProvider = ({ children }) => {
         });
         const resToken = res.data.token;
         setToken(resToken);
-        console.log(res.data);
         await AsyncStorage.setItem('token', resToken);
-        console.log(resToken);
 
         const userInfo = await axios.get('/currentUser', {
             headers: {
                 'Authorization': `Bearer ${resToken}`
             },
         });
-        console.log("userinfo" + userInfo);
         setUser(userInfo.data);
         setError(null);
     }

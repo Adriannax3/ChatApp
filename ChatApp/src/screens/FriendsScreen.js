@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Text, StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, ActivityIndicator, Pressable } from 'react-native';
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 import axios from '../axios';
@@ -25,7 +25,6 @@ export default function FriendsScreen() {
               }
           });
           setFriends(res.data);
-          console.log(res.data);
       } catch (err) {
           console.log("Błąd pobierania znajomych:", err);
           setError("Nie udało się pobrać znajomych.");
@@ -63,27 +62,36 @@ export default function FriendsScreen() {
                     <Text style={{color: theme.colors.error }}>Brak znajomych</Text>
                 </View>
             ) : (
-                <View>
-                <Text style={{color: theme.colors.error }}>Twoi znajomi</Text>
+                <View style={styles.container}>
+                <Text style={[styles.text, { color: theme.colors.text }]}>
+                    Twoi znajomi
+                </Text>
                 <FlatList
                     contentContainerStyle={styles.listContainer}
                     data={friends}
                     keyExtractor={(item) => item._id}
                     renderItem={({ item }) => (
-                        <View style={styles.friendItem}>
+                        <Pressable
+                            style={({ pressed }) => [
+                            styles.friendItem,
+                            pressed && { backgroundColor: theme.colors.primary + '33' }
+                            ]}
+                            onPress={() => navigation.navigate('Chat', { friend: item })}
+                        >
                             <Text style={styles.friendAvatar}>
-                              {item.avatar}
+                            {item.avatar}
                             </Text>
                             <Text style={[styles.friendText, { color: theme.colors.text }]}>
-                              {item.username}
+                            {item.username}
                             </Text>
-                        </View>
+                        </Pressable>
                     )}
                 />
                 </View>
             )}
           <View>
             <ButtonRectangle text="Zaproś znajomych" onPress={() => navigation.navigate('SearchFriends')}/>
+            <ButtonRectangle text="Zobacz oczekujące zaproszenia" onPress={() => navigation.navigate('Invitations')}/>
           </View>
         </SafeAreaView>
     );
@@ -93,15 +101,21 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         paddingTop: 40,
+        alignItems: 'center',
+        paddingBottom: 40
     },
     loading: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    listContainer: {
+    container: {
         width: '100%',
-        padding: 20,
+    },
+    listContainer: {
+        flexGrow: 1,
+        paddingHorizontal: 20,
+        alignSelf: 'stretch',
     },
     friendItem: {
         paddingVertical: 10,
@@ -117,4 +131,11 @@ const styles = StyleSheet.create({
     friendText: {
         fontSize: 18,
     },
+    text: {
+        fontSize: 20,
+        fontWeight: '600',
+        textAlign: 'center',
+        marginVertical: 10,
+        letterSpacing: 0.5,
+    }
 });

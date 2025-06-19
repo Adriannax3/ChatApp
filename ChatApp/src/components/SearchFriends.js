@@ -30,7 +30,6 @@ const SearchFriends = () => {
         },
       });
       setAllUsers(res.data);
-      console.log(res.data);
     } catch (error) {
       console.error("Błąd pobierania użytkowników:", error);
     } finally {
@@ -101,7 +100,6 @@ const SearchFriends = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    paddingTop: 60,
     flex: 1,
   },
   input: {

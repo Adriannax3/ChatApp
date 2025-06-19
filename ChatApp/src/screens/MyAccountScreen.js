@@ -24,7 +24,6 @@ export default function MyAccountScreen() {
         <Text style={styles.avatar}>{user.avatar}</Text>
         <Text style={styles.username}>{user.username}</Text>
         <Text style={styles.login}>@{user.login}</Text>
-        <Text>Ilość znajomych: X</Text>
         <View>
           <ButtonRectangle text={'Wyloguj się'} onPress={() => logout(navigation)} />
         </View>

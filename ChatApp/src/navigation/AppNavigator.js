@@ -11,6 +11,7 @@ import { useAuth } from '../context/AuthContext';
 import SearchFriends from '../components/SearchFriends';
 import HomeScreen from '../components/HomeScreen';
 import InvitationsScreen from '../components/InvitationsScreen';
+import ChatScreen from '../screens/ChatScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,26 +51,6 @@ const LoggedInTabs = () => {
 //          <FontAwesome name="user" size={size} color={color} />
 //        ),
       }}/>
-      <Tab.Screen 
-      name="SearchFriends"
-      component={SearchFriends}
-      options={{
-        headerShown: false,
-      }}
-      />
-       <Tab.Screen 
-        name="Invitations" 
-        component={HomeScreen} 
-        options={{ 
-          headerShown: false,
-          // tabBarIcon: ({ color, size }) => (
-          //   <Text>
-          //   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path> <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path> </svg> 
-
-          //   </Text>
-          // )
-        }}
-      />
     </Tab.Navigator>
     
   );
@@ -79,7 +60,39 @@ const AppNavigator = () => {
   const { user } = useAuth();
 
   if (user) {
-    return <LoggedInTabs />;
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Tabs"
+          component={LoggedInTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={ChatScreen}
+          options={({ route }) => ({
+            title: `Czatujesz z ${route.params?.friend?.username}` || 'Czat',
+            headerShown: true,
+          })}
+        />
+        <Stack.Screen
+          name="SearchFriends"
+          component={SearchFriends}
+          options={{
+            title: 'Wyszukaj znajomych',
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen 
+          name="Invitations"
+          component={InvitationsScreen}
+          options={{
+            title: 'Oczekujące zaproszenia',
+            headerShown: true,
+          }}
+        />
+      </Stack.Navigator>
+    );
   } else {
     return (
       <Stack.Navigator initialRouteName="Welcome">
