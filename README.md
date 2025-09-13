@@ -13,6 +13,7 @@ Aplikacja czatu stworzona przy użyciu React Native i Node.js, umożliwiająca u
 - Prowadzenie rozmów w czasie rzeczywistym
 - Historia wiadomości
 - Możliwość przełączania trybu jasny/ciemny
+- Powiadomienia o nowych wiadomościach
   
 ## Struktura projektu
 ```
@@ -57,8 +58,16 @@ npx react-native run-android
       <img src="https://github.com/user-attachments/assets/2da0ffdc-c76d-4cf0-9617-9cacab3944da" width="300" />
     </td>
   </tr>
-  <tr>
-    <td colspan="2" align="center">
+   <tr>
+    <td>
+      <img width="300" alt="image" src="https://github.com/user-attachments/assets/2efba620-6ecb-499a-9d69-b649e4e5380e" />
+    </td>
+      <td>
+        <img width="300" alt="image" src="https://github.com/user-attachments/assets/fba7dc7d-3365-4f8f-b890-55c8cdcd6c25" />
+    </td>
+  </tr>
+    <tr>
+      <td colspan="2">
       <img src="https://github.com/user-attachments/assets/131e40dc-4442-43a7-aa31-7ea16bd04375" width="600" />
     </td>
   </tr>
