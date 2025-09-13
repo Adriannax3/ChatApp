@@ -5,7 +5,12 @@ connectDB();
 
 class messageActions {
     async saveMessage({ fromUserId, toUserId, message }) {
-        const newMessage = new Message({ fromUserId, toUserId, message });
+        const newMessage = new Message({ 
+            fromUserId, 
+            toUserId, 
+            message,
+            isRead: false
+        });
         return await newMessage.save();
     }
 
@@ -21,6 +26,19 @@ class messageActions {
             res.status(200).json(messages);
         } catch (error) {
             res.status(500).json({message: "Błąd podczas pobierania wiadomości: ", error})
+        }
+    }
+
+    async markMessagesAsRead(req, res) {
+        try {
+            const { fromUserId, toUserId } = req.body;
+            await Message.updateMany(
+                { fromUserId, toUserId, isRead: false },
+                { $set: { isRead: true } }
+            );
+            res.status(200).json({ message: "Wiadomości oznaczone jako przeczytane" });
+        } catch (error) {
+            res.status(500).json({ message: "Błąd podczas aktualizacji wiadomości: ", error });
         }
     }
 }

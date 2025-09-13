@@ -5,6 +5,7 @@ const messageSchema = new mongoose.Schema({
   toUserId: { type: String, required: true },
   message: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
+  isRead: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model("Message", messageSchema);
